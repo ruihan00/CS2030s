@@ -25,6 +25,7 @@ class BusAPI {
   private static final String BUS_SERVICE_API = 
       "https://cs2030-bus-api.herokuapp.com/bus_services/";
 
+
   /** 
    * URL to query for bus services. 
    * An alternative is "https://www.comp.nus.edu.sg/~ooiwt/bus_stops/"
@@ -46,11 +47,18 @@ class BusAPI {
     HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(url))
         .build();
+    /*
     CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, BodyHandlers.ofString()); // TODO
 
     return response.thenApply(x -> {
-      System.out.println(x);
+      System.out.println(x.body());
       return x.body();});
+      */
+    //System.out.println(request);
+    return client.sendAsync(request, BodyHandlers.ofString()).thenApply(
+        x -> {
+          //System.out.println(x.body());
+          return x.body();});
   }
 
   /**
@@ -61,6 +69,7 @@ class BusAPI {
    *     string if something go wrong.
    */ 
   public static CompletableFuture<String> getBusStopsServedBy(String serviceId) {
+    //System.out.print(1);
     return httpGet(BUS_SERVICE_API + serviceId);
   }
 
@@ -72,6 +81,7 @@ class BusAPI {
    *     string if the API query failed.
    */ 
   public static CompletableFuture<String> getBusServicesAt(String stopId) {
+    //System.out.println(stopId);
     return httpGet(BUS_STOP_API + stopId);
   }
 }

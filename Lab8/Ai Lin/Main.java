@@ -30,9 +30,16 @@ public class Main {
         String searchString = sc.next();
         list.add(BusSg.findBusServicesBetween(srcId, searchString).thenCompose(x -> x.description()));
       }
+      CompletableFuture.allOf(list.toArray(new CompletableFuture<?>[list.size()])).join();
+      for (CompletableFuture<String> item :list) {
+       item.thenApply(x -> {
+         System.out.println(x);
+         return x;
+       });
+      }
+
+
       sc.close();
-      CompletableFuture.allOf(list.toArray(new CompletableFuture<?>[0]));
-      list.stream().map(x -> x.join()).forEach(y -> System.out.println(y));
     } catch (FileNotFoundException exception) {
       System.err.println("Unable to open file " + args[0] + " "
           + exception);

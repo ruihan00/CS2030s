@@ -22,10 +22,12 @@ class BusSg {
    */
   public static CompletableFuture<BusRoutes> findBusServicesBetween(BusStop stop, String searchString) {
     
-    CompletableFuture<Map<BusService, CompletableFuture<Set<BusStop>>>> validServices = stop.getBusServices().thenApply(x -> x.stream()
+    CompletableFuture<Map<BusService, CompletableFuture<Set<BusStop>>>> validServices = stop.getBusServices().thenApply(x -> { 
+      //System.out.println(x);
+      return x.stream()
           .collect(Collectors.toMap(
               service -> service, 
-              service -> service.findStopsWith(searchString))));
+              service -> service.findStopsWith(searchString)));});
     return validServices.thenApply(x -> new BusRoutes(stop, searchString, x));
   }
 }

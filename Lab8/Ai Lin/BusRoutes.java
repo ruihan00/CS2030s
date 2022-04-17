@@ -37,7 +37,7 @@ class BusRoutes {
    */
   public CompletableFuture<String> description() {
     CompletableFuture<String> result = CompletableFuture.supplyAsync(() -> "Search for: " + this.stop + " <-> " + name + ":\n");
-    result.thenCombine(CompletableFuture.supplyAsync(() -> "From " +  this.stop + "\n"), (x, y) -> x + y);
+    result.thenApply(x -> x+= "From " +  this.stop + "\n");
 
     for (BusService service : services.keySet()) {
       CompletableFuture<Set<BusStop>> stops = services.get(service);

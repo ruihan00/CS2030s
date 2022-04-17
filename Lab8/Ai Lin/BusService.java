@@ -29,9 +29,9 @@ class BusService {
    * @return A set of bus stops that this bus services serves.
    */
   public CompletableFuture<Set<BusStop>> getBusStops() {
-    
     CompletableFuture<Set<BusStop>> stops = BusAPI.getBusStopsServedBy(serviceId).thenApply((x) -> {
       Scanner sc = new Scanner(x);
+      //System.out.println(x);
       Set<BusStop> stop = sc.useDelimiter("\n")
         .tokens()
         .map(line -> line.split(","))
@@ -50,10 +50,12 @@ class BusService {
    * @return A list of bus stops matching the given name.
    */
   public CompletableFuture<Set<BusStop>> findStopsWith(String name) {
-    return getBusStops().thenApply(x -> x
+    return getBusStops().thenApply(x -> {
+      //System.out.println(x);
+      return x
        .stream()
        .filter(stop -> stop.matchName(name))
-       .collect(Collectors.toSet()));
+       .collect(Collectors.toSet());});
   }
 
   /**
